@@ -1,0 +1,491 @@
+<html>
+<header>
+    <script src="./axios.min.js"></script>
+    <script src="./lodash.min.js"></script>
+    <script src="./jszip.min.js"></script>
+
+    <!--    <script src="./FileSaver.min.js"></script>-->
+
+    <script src="./FileSaver.min.js"></script>
+    <script src="./jspdf.umd.js"></script>
+    <script src="./html2canvas.min.js"></script>
+
+
+    <script>
+        const listData = [
+            {
+                "id": "a0b47a1e9013",
+                "clapCount": 39189,
+                "mediumUrl": "https://towardsdatascience.com/10-common-software-architectural-patterns-in-a-nutshell-a0b47a1e9013",
+                "title": "10 Common Software Architectural Patterns in a nutshell"
+            },
+            {
+                "id": "117428612f46",
+                "clapCount": 81910,
+                "mediumUrl": "https://medium.com/@vanflymen/learn-blockchains-by-building-one-117428612f46",
+                "title": "Learn Blockchains by Building One"
+            },
+            {
+                "id": "4ffc018077da",
+                "clapCount": 5204,
+                "mediumUrl": "https://medium.com/webbdev/solid-4ffc018077da",
+                "title": "Принципы SOLID, о которых должен знать каждый разработчик"
+            },
+            {
+                "id": "4a9d06213fdc",
+                "clapCount": 4128,
+                "mediumUrl": "https://medium.com/omarelgabrys-blog/software-engineering-software-process-and-software-process-models-part-2-4a9d06213fdc",
+                "title": "Software Engineering — Software Process and Software Process Models (Part 2)"
+            },
+            {
+                "id": "9663703368e8",
+                "clapCount": 56193,
+                "mediumUrl": "https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8",
+                "title": "I never understood JavaScript closures"
+            },
+            {
+                "id": "715b975dcad4",
+                "clapCount": 6330,
+                "mediumUrl": "https://itnext.io/solid-principles-explanation-and-examples-715b975dcad4",
+                "title": "SOLID Principles: Explanation and examples"
+            },
+            {
+                "id": "874454397885",
+                "clapCount": 29346,
+                "mediumUrl": "https://medium.com/@_michaellin/why-i-quit-a-450k-engineering-job-at-netflix-874454397885",
+                "title": "Why I Quit a $450k Engineering Job at Netflix"
+            },
+            {
+                "id": "6da748ba676c",
+                "clapCount": 8481,
+                "mediumUrl": "https://javascript.plainenglish.io/coding-wont-exist-in-5-years-this-is-why-6da748ba676c",
+                "title": "Coding Won’t Exist In 5 Years. This Is Why"
+            },
+            {
+                "id": "dc06d3b81c9d",
+                "clapCount": 18628,
+                "mediumUrl": "https://javascript.plainenglish.io/bill-gates-people-dont-realize-what-s-coming-dc06d3b81c9d",
+                "title": "Bill Gates: People Don’t Realize What’s Coming"
+            },
+            {
+                "id": "61df0b10d323",
+                "clapCount": 3696,
+                "mediumUrl": "https://koukia.ca/delete-a-local-and-a-remote-git-branch-61df0b10d323",
+                "title": "Delete a local and a remote GIT branch"
+            }
+        ];
+        const zhContentsData = [
+            {
+                "htmlTag": "H3",
+                "text": "10种常见的软件体系结构模式"
+            },
+            {
+                "htmlTag": "P",
+                "text": "有没有想过大型企业级系统是如何设计的？在主要的软件开发开始之前，我们必须选择一个合适的体系结构，为我们提供所需的功能和质量属性。因此，在将不同的体系结构应用于我们的设计之前，我们应该了解它们。"
+            },
+            {
+                "htmlTag": "H3",
+                "text": "什么是建筑模式？"
+            },
+            {
+                "htmlTag": "P",
+                "text": "根据维基百科，"
+            },
+            {
+                "htmlTag": "BQ",
+                "text": "体系结构模式是对给定上下文中软件体系结构中常见问题的通用、可重用的解决方案。体系结构模式与软件设计模式相似，但范围更广。"
+            },
+            {
+                "htmlTag": "P",
+                "text": "在本文中，我将简要解释以下10种常见的体系结构模式及其用法、优点和缺点。"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "分层图案"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "客户端-服务器模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "主从模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "管道过滤器样式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Broker模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "对等模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "事件总线模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "模型视图控制器模式"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "黑板图案"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "解析器模式"
+            },
+            {
+                "htmlTag": "H3",
+                "text": "1.分层图案"
+            },
+            {
+                "htmlTag": "P",
+                "text": "这种模式可以用于构建程序，这些程序可以分解为子任务组，每个子任务都处于特定的抽象级别。每一层都向下一个更高层提供服务。"
+            },
+            {
+                "htmlTag": "P",
+                "text": "一般信息系统中最常见的4层如下。"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "表示层（也称为UI层）"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "应用层（也称为服务层）"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "业务逻辑层（也称为域层）"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "数据访问层（也称为持久层）"
+            },
+            {
+                "htmlTag": "H4",
+                "text": "用法"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "通用桌面应用程序。"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "电子商务web应用程序。"
+            },
+            {
+                "htmlTag": "H3",
+                "text": "2.客户端-服务器模式"
+            },
+            {
+                "htmlTag": "P",
+                "text": "这种模式由两个方面组成；一个服务器和多个客户端。服务器组件将向多个客户端组件提供服务。客户端请求…"
+            }
+        ];
+        const contentsData = [
+            {
+                "htmlTag": "H3",
+                "text": "10 Common Software Architectural Patterns in a nutshell"
+            },
+            {
+                "htmlTag": "P",
+                "text": "Ever wondered how large enterprise scale systems are designed? Before major software development starts, we have to choose a suitable architecture that will provide us with the desired functionality and quality attributes. Hence, we should understand different architectures, before applying them to our design."
+            },
+            {
+                "htmlTag": "H3",
+                "text": "What is an Architectural Pattern?"
+            },
+            {
+                "htmlTag": "P",
+                "text": "According to Wikipedia,"
+            },
+            {
+                "htmlTag": "BQ",
+                "text": "An architectural pattern is a general, reusable solution to a commonly occurring problem in software architecture within a given context. Architectural patterns are similar to software design pattern but have a broader scope."
+            },
+            {
+                "htmlTag": "P",
+                "text": "In this article, I will be briefly explaining the following 10 common architectural patterns with their usage, pros and cons."
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Layered pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Client-server pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Master-slave pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Pipe-filter pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Broker pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Peer-to-peer pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Event-bus pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Model-view-controller pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Blackboard pattern"
+            },
+            {
+                "htmlTag": "OLI",
+                "text": "Interpreter pattern"
+            },
+            {
+                "htmlTag": "H3",
+                "text": "1. Layered pattern"
+            },
+            {
+                "htmlTag": "P",
+                "text": "This pattern can be used to structure programs that can be decomposed into groups of subtasks, each of which is at a particular level of abstraction. Each layer provides services to the next higher layer."
+            },
+            {
+                "htmlTag": "P",
+                "text": "The most commonly found 4 layers of a general information system are as follows."
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "Presentation layer (also known as UI layer)"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "Application layer (also known as service layer)"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "Business logic layer (also known as domain layer)"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "Data access layer (also known as persistence layer)"
+            },
+            {
+                "htmlTag": "H4",
+                "text": "Usage"
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "General desktop applications."
+            },
+            {
+                "htmlTag": "ULI",
+                "text": "E commerce web applications."
+            },
+            {
+                "htmlTag": "H3",
+                "text": "2. Client-server pattern"
+            },
+            {
+                "htmlTag": "P",
+                "text": "This pattern consists of two parties; a server and multiple clients. The server component will provide services to multiple client components. Clients request…"
+            }
+        ];
+        window.jsPDF = window.jspdf.jsPDF;
+        const exportPDF = async (title, node) => {
+            console.log(" exportPDF title ", title);
+            const element = document.getElementById(node); // 这个dom元素是要导出pdf的div容器
+            const w = element.offsetWidth; // 获得该容器的宽
+            const h = element.offsetWidth; // 获得该容器的高
+            const offsetTop = element.offsetTop; // 获得该容器到文档顶部的距离
+            const offsetLeft = element.offsetLeft; // 获得该容器到文档最左的距离
+            const page = document.createElement(node);
+            let abs = 0;
+            const win_i = document.body.clientWidth; // 获得当前可视窗口的宽度（不包含滚动条）
+            const win_o = window.innerWidth; // 获得当前窗口的宽度（包含滚动条）
+            if (win_o > win_i) {
+                abs = (win_o - win_i) / 2; // 获得滚动条长度的一半
+            }
+            page.width = w * 2; // 将画布宽&&高放大两倍
+            page.height = h * 2;
+            /*const pageCanvas = document.createElement("canvas_" + node);
+            const context = pageCanvas.getContext("2d");
+            context.scale(2, 2);
+            context.translate(-offsetLeft - abs, -offsetTop);*/
+
+            const canvas = await html2canvas(element, {
+                allowTaint: true,
+                scale: 2, // 提升画面质量，但是会增加文件大小
+            });
+
+            const contentWidth = canvas.width;
+            const contentHeight = canvas.height;
+            //一页pdf显示html页面生成的canvas高度;
+            const pageHeight = (contentWidth / 592.28) * 841.89;
+            //未生成pdf的html页面高度
+            let leftHeight = contentHeight;
+            //页面偏移
+            let position = 0;
+            //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+            const imgWidth = 595.28;
+            const imgHeight = (592.28 / contentWidth) * contentHeight;
+
+            const pageData = canvas.toDataURL("image/jpeg", 1.0);
+            const str = "p";
+            const pdf = new jsPDF(
+                {
+                    orientation: str,
+                    unit: "pt",
+                    format: "a4"
+                }
+            );
+
+            //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+            //当内容未超过pdf一页显示的范围，无需分页
+            if (leftHeight < pageHeight) {
+                pdf.addImage(pageData, "JPEG", 0, 0, imgWidth, imgHeight);
+            } else {
+                // 分页
+                while (leftHeight > 0) {
+                    pdf.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
+                    leftHeight -= pageHeight;
+                    position -= 841.89;
+                    //避免添加空白页
+                    if (leftHeight > 0) {
+                        pdf.addPage();
+                    }
+                }
+            }
+
+            return {title, blob: await pdf.output("blob")};
+        };
+
+        let __contentList = [];
+
+        const getList = async () => {
+            const res = await axios.get('http://localhost:8000/article/list');
+            const {data: {data: {data: list}}} = res;
+            return list;
+            // return listData;
+        };
+
+        const getContent = async (id) => {
+            const res = await axios.get(`http://localhost:8000/article/content?id=${id}&translate=1`);
+            const {data: {data: {content}}} = res;
+            console.log('content =>', content);
+            return content;
+        };
+
+        const translate = () => {
+
+        };
+
+        const render = (list) => {
+            const dom = document.getElementById('list');
+            _.map(list, (l, i) => {
+                const div = document.createElement('div');
+                dom.appendChild(div);
+                div.setAttribute("id", `item-${i}`);
+                {
+                    const h3 = document.createElement("H3");
+                    const title = document.createTextNode(l.title);
+                    h3.appendChild(title);
+                    div.append(h3);
+                }
+                const {contents, zhContents} = l;
+                _.map(contents, (c, i) => {
+                    const cdiv = document.createElement("div");
+                    const cc = document.createTextNode(c.text);
+                    cdiv.appendChild(cc);
+
+                    const zcdiv = document.createElement("div");
+                    const zcc = document.createTextNode(zhContents[i].text);
+                    zcdiv.appendChild(zcc);
+
+                    div.append(cdiv);
+                    div.append(zcc);
+                });
+                div.append(document.createElement("hr"));
+
+            });
+        };
+
+        const firePdf = async () => {
+            const items = __contentList;
+            const zip = new JSZip();
+           await Promise.all(_.map(items, async (c, i) => {
+                const f = await exportPDF(`${items[i].title}.pdf`, `item-${i}`);
+                console.log(' items[i].title => ', items[i].title, f.blob);
+                await zip.file(f.title, f.blob);
+            }));
+
+            const content = await zip.generateAsync({type: "blob"});
+
+            console.log(' items[i].title => ', zip.files);
+            await saveAs(content, "XXX.zip");
+        };
+
+        const fire = async () => {
+            const target = await getList();
+            //  const target = _.filter(list, (l, i) => i === 0);
+            const contentList = await Promise.all(_.map(target, async (t) => {
+                const {id, title} = t;
+                const {contents, zhContents} = await getContent(t.id);
+                /*const contents = contentsData;
+                const zhContents = zhContentsData;*/
+                return {id, title, contents, zhContents};
+            }));
+            render(contentList);
+            __contentList = contentList;
+        };
+
+
+        fire();
+
+        /* axios.get('http://localhost:8000/article/list')
+               .then(  (res) => {
+                  const {data: {data : {data : list}}} = res;
+                  console.log('list =>' , list);
+                  const contentList = _.chain(list)
+                    .filter((l, i)=> i === 0)
+                    .map( (l, i)=> {
+                      console.log('l =>' , l);
+                      axios.get(`http://localhost:8000/article/content?id=${l.id}`)
+                      .then(res=>{
+                          console.log('content =>' , res);
+                      })
+                      .catch(
+                       (error) => {
+                              console.error('content error =>' , list);
+                           }
+                      );
+                  })
+                  .value();
+
+               })
+               .catch(  (error) => {
+                  console.error('list error =>' , list);
+               }); */
+    </script>
+</header>
+<body>
+<span>获取</span>
+<span onclick="firePdf()">下载</span>
+<div id="list">
+
+</div>
+
+
+</body>
+</html>
